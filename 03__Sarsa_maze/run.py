@@ -1,0 +1,53 @@
+from maze_env import Maze
+from RL_brain import SarsaTable, QLearningTable
+
+def update_sarsa():
+    for episode in range(100):
+        observation = env.reset()
+
+        action = RL_SARSA.choose_action(str(observation))
+
+        while True:
+            env.render()
+
+            observation_, reward, done = env.step(action)
+
+            action_ = RL_SARSA.choose_action(str(observation_))
+
+            RL_SARSA.learn(str(observation), action, reward, str(observation_), action_)
+
+            observation = observation_
+            action = action_
+
+            if done:
+                break
+    print('Game Over')
+    env.destroy()
+
+def update_Q():
+    for episode in range(100):
+        observation = env.reset()
+
+
+        while True:
+            env.render()
+
+            action = RL_Q.choose_action(str(observation))
+
+            observation_, reward, done = env.step(action)
+
+
+            RL_Q.learn(str(observation), action, reward, str(observation_))
+
+            observation = observation_
+
+            if done:
+                break
+
+if __name__ == "__main__":
+    env = Maze()
+    RL_SARSA = SarsaTable(actions=list(range(env.n_actions)))
+    RL_Q = QLearningTable(actions=list(range(env.n_actions)))
+
+    env.after(100, update_Q)
+    env.mainloop()
