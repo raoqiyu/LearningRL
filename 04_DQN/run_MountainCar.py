@@ -3,14 +3,14 @@ Deep Q network
 """
 
 import gym
-from RL_brain import DeepQNetwork
+from RL_brain import DoubleDQN
 
 env = gym.make('MountainCar-v0')
 env = env.unwrapped
 print(env.action_space, env.observation_space, 
         env.observation_space.high, env.observation_space.low, sep='\n')
 
-RL = DeepQNetwork(n_actions=env.action_space.n,
+RL = DoubleDQN(n_actions=env.action_space.n,
                   n_features=env.observation_space.shape[0],
                   learning_rate=0.01, e_greedy=0.9,
                   replace_target_iter=100, memory_size=2000,
