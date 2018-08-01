@@ -28,7 +28,7 @@ class A3CNet:
     def __init__(self, scope, globalA3C=None):
         if scope == GLOBAL_NET_SCOPE:
             with tf.variable_scope(scope):
-                self.s = tf.placeholder(tf.float32, [None, N_S], 'N_S')
+                self.s = tf.placeholder(tf.float32, [None, N_S], 'S')
                 self.a_params, self.c_params = self._build_net(scope)[-2:]
         else:
             with tf.variable_scope(scope):
@@ -147,6 +147,7 @@ class Worker:
                         GLOBAL_RUNNING_R.append(0.99*GLOBAL_RUNNING_R[-1] + 0.01*ep_r)
                     print(self.name,
                         "Ep:", GLOBAL_EP,
+                        "total_step:", total_step,
                         "| Ep_r: %i"%GLOBAL_RUNNING_R[-1])
                     GLOBAL_EP += 1
                     break
