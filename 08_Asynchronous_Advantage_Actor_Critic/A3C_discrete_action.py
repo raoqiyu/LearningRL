@@ -59,7 +59,7 @@ class A3CNet:
 
                 with tf.name_scope('push'):
                     self.update_a_op = OPT_A.apply_gradients(zip(self.a_grads, globalA3C.a_params))
-                    self.update_c_op = OPT_A.apply_gradients(zip(self.c_grads, globalA3C.c_params))
+                    self.update_c_op = OPT_C.apply_gradients(zip(self.c_grads, globalA3C.c_params))
 
     def _build_net(self, scope):
         w_init = tf.random_normal_initializer(0., 1.)
