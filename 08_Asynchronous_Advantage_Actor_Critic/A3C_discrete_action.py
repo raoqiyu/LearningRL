@@ -119,10 +119,9 @@ class Worker:
                         v_s_ = 0
                     else:
                         v_s_ = SESS.run(self.A3C.v, {self.A3C.s:s_[np.newaxis,:]})[0,0]
-
                     buffer_v_target = []
                     for r in buffer_r[::-1]:
-                        v_s = r + GAMMA*v_s_
+                        v_s_ = r + GAMMA*v_s_
                         buffer_v_target.append(v_s_)
                     buffer_v_target.reverse()
 
@@ -147,7 +146,6 @@ class Worker:
                         GLOBAL_RUNNING_R.append(0.99*GLOBAL_RUNNING_R[-1] + 0.01*ep_r)
                     print(self.name,
                         "Ep:", GLOBAL_EP,
-                        "total_step:", total_step,
                         "| Ep_r: %i"%GLOBAL_RUNNING_R[-1])
                     GLOBAL_EP += 1
                     break
