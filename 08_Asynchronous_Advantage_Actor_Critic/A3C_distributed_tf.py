@@ -46,9 +46,8 @@ class A3CNet:
                 with tf.name_scope('local_grad'):
                     self.a_grads = tf.gradients(self.a_loss, self.a_params)
                     self.c_grads = tf.gradients(self.c_loss, self.c_params)
-                
-                self.global_step = tf.train.get_or_create_global_step()
-            
+            # 全局的global step，而不是每个worker的graph中私有step，私有的step会导致无法系统学习   
+            self.global_step = tf.train.get_or_create_global_step()
             with tf.name_scope('sync'):
                 with tf. name_scope('pull'):
                     self.pull_a_params_op = [l_p.assign(g_p) for l_p, g_p in zip(self.a_params, globalA3C.a_params)]
