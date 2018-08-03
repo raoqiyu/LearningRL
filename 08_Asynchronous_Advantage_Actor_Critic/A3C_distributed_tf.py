@@ -48,14 +48,15 @@ class A3CNet:
                     self.c_grads = tf.gradients(self.c_loss, self.c_params)
                 
                 self.global_step = tf.train.get_or_create_global_step()
-                with tf.name_scope('sync'):
-                    with tf. name_scope('pull'):
-                        self.pull_a_params_op = [l_p.assign(g_p) for l_p, g_p in zip(self.a_params, globalA3C.a_params)]
-                        self.pull_c_params_op = [l_p.assign(g_p) for l_p, g_p in zip(self.c_params, globalA3C.c_params)]
+            
+            with tf.name_scope('sync'):
+                with tf. name_scope('pull'):
+                    self.pull_a_params_op = [l_p.assign(g_p) for l_p, g_p in zip(self.a_params, globalA3C.a_params)]
+                    self.pull_c_params_op = [l_p.assign(g_p) for l_p, g_p in zip(self.c_params, globalA3C.c_params)]
 
-                    with tf.name_scope('push'):
-                        self.update_a_op = opt_a.apply_gradients(zip(self.a_grads, globalA3C.a_params),global_step=self.global_step)
-                        self.update_c_op = opt_c.apply_gradients(zip(self.c_grads, globalA3C.c_params))
+                with tf.name_scope('push'):
+                    self.update_a_op = opt_a.apply_gradients(zip(self.a_grads, globalA3C.a_params),global_step=self.global_step)
+                    self.update_c_op = opt_c.apply_gradients(zip(self.c_grads, globalA3C.c_params))
 
     def _build_net(self, scope):
         w_init = tf.random_normal_initializer(0., 1.)
