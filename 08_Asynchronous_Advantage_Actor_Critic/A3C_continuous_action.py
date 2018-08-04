@@ -56,7 +56,7 @@ class A3CNet:
                     self.a_loss = tf.reduce_mean(-self.exp_v)
 
                 with tf.name_scope('choose_a'):
-                    self.A = tf.clip_by_value(tf.squeeze(normal_dist.sample(1),axis=0), A_BOUND[0], A_BOUND[1])
+                    self.A = tf.clip_by_value(tf.squeeze(normal_dist.sample(1),axis=[0,1]), A_BOUND[0], A_BOUND[1])
 
                 with tf.name_scope('local_grad'):
                     self.a_grads = tf.gradients(self.a_loss, self.a_params)
@@ -84,7 +84,7 @@ class A3CNet:
 
         a_params = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, scope=scope+'/actor')
         c_params = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, scope=scope+'/critic')
-
+        print(mu.shape, sigma.shape)
         return mu, sigma, v, a_params, c_params
 
     def update_global(self, feed_dict):
@@ -95,7 +95,7 @@ class A3CNet:
 
     def choose_action(self, s):
         s = s[np.newaxis,:]
-        action = SESS.run(self.A,{self.s:s})[0]
+        action = SESS.run(self.A,{self.s:s})
         return action
 
 
